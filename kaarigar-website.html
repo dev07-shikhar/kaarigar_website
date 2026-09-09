@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kaarigar — Business Partner for Artisans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6F1E6;
+    --panel:#FFFDF8;
+    --ink:#241F1A;
+    --ink-soft:#4E463C;
+    --teal:#1E4A50;
+    --teal-deep:#123236;
+    --marigold:#C8862E;
+    --marigold-deep:#A56B1F;
+    --marigold-soft:#F0DFC0;
+    --stone:#8B8377;
+    --line:#E4DCC8;
+    --green:#3F7A4E;
+    --red:#B5482F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces', serif;}
+  button{font-family:inherit;cursor:pointer;}
+  ::selection{background:var(--marigold-soft);}
+
+  a{color:inherit;}
+
+  /* ---------- App shell ---------- */
+  .shell{
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    width:236px;
+    flex-shrink:0;
+    background:var(--teal);
+    color:#F2ECDF;
+    display:flex;
+    flex-direction:column;
+    padding:28px 20px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    margin-bottom:44px;
+    padding-left:4px;
+  }
+  .brand .mark{
+    font-family:'Fraunces', serif;
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:0.2px;
+  }
+  .brand .dev{
+    font-size:13px;
+    color:#B9C9C6;
+  }
+  .nav{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 12px;
+    border-radius:9px;
+    background:transparent;
+    border:none;
+    color:#CFDDD9;
+    font-size:15px;
+    text-align:left;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-item svg{width:19px;height:19px;flex-shrink:0;}
+  .nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;}
+  .nav-item.active{
+    background:rgba(255,255,255,0.12);
+    color:#fff;
+    font-weight:600;
+  }
+  .sidebar-foot{
+    margin-top:auto;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,0.12);
+    font-size:12.5px;
+    color:#93A6A2;
+    line-height:1.5;
+  }
+
+  /* Main */
+  .main{
+    flex:1;
+    min-width:0;
+    padding:40px 48px 80px;
+  }
+  .container{
+    max-width:900px;
+    margin:0 auto;
+  }
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* Top header row within screens */
+  .page-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:30px;
+    gap:20px;
+  }
+  .page-head h1{
+    font-size:30px;
+    font-weight:600;
+    margin:0 0 4px;
+    color:var(--ink);
+  }
+  .page-head p{
+    margin:0;
+    color:var(--stone);
+    font-size:15px;
+  }
+
+  /* ---------- HOME ---------- */
+  .greeting-sub{color:var(--stone);font-size:14.5px;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+    margin:26px 0;
+  }
+  .stat-tile{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px 20px;
+  }
+  .stat-tile .label{font-size:13.5px;color:var(--stone);margin-bottom:8px;}
+  .stat-tile .value{font-size:26px;font-weight:600;font-family:'Fraunces',serif;}
+  .stat-tile .delta{font-size:13px;margin-top:8px;font-weight:600;}
+  .delta.up{color:var(--green);}
+  .delta.warn{color:var(--red);}
+
+  .cta-banner{
+    background:var(--teal);
+    color:#fff;
+    border-radius:12px;
+    padding:20px 22px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    border:none;
+    width:100%;
+    text-align:left;
+    margin-bottom:18px;
+    transition:background .15s ease;
+  }
+  .cta-banner:hover{background:var(--teal-deep);}
+  .cta-icon{
+    width:42px;height:42px;border-radius:10px;
+    background:var(--marigold);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .cta-icon svg{width:20px;height:20px;color:#fff;}
+  .cta-text .t1{font-size:16.5px;font-weight:600;}
+  .cta-text .t2{font-size:13.5px;color:#C9D8D4;margin-top:2px;}
+
+  .tip-panel{
+    background:var(--marigold-soft);
+    border-radius:12px;
+    padding:18px 20px;
+    display:flex;
+    gap:14px;
+    margin-bottom:32px;
+  }
+  .tip-panel svg{width:20px;height:20px;color:var(--marigold-deep);flex-shrink:0;margin-top:2px;}
+  .tip-panel .tt{font-weight:600;margin-bottom:4px;}
+  .tip-panel .tb{font-size:14px;color:var(--ink-soft);line-height:1.5;}
+
+  h2.section-title{
+    font-size:19px;
+    font-weight:600;
+    margin:0 0 14px;
+  }
+  .activity-list{
+    border-top:1px solid var(--line);
+  }
+  .activity-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .a-icon{
+    width:34px;height:34px;border-radius:8px;
+    background:var(--marigold-soft);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .a-icon svg{width:16px;height:16px;color:var(--marigold-deep);}
+  .a-title{font-size:14.5px;font-weight:600;}
+  .a-time{font-size:12.5px;color:var(--stone);margin-top:2px;}
+
+  /* ---------- ADD PRODUCT WIZARD ---------- */
+  .steps-track{
+    display:flex;
+    gap:8px;
+    margin-bottom:32px;
+  }
+  .steps-track .seg{
+    flex:1;
+    height:4px;
+    border-radius:2px;
+    background:var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .steps-track .seg.done, .steps-track .seg.current{background:var(--marigold);}
+  .steps-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--stone);
+    margin-top:8px;
+    margin-bottom:26px;
+  }
+  .steps-labels span.on{color:var(--ink);font-weight:600;}
+
+  .wizard-panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:32px;
+  }
+  .wizard-panel h3{font-size:20px;margin:0 0 6px;font-weight:600;}
+  .wizard-panel .sub{color:var(--stone);font-size:14.5px;margin-bottom:22px;max-width:480px;line-height:1.5;}
+
+  .photo-box{
+    background:var(--cream);
+    border:1.5px dashed var(--line);
+    border-radius:12px;
+    height:300px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    color:var(--stone);
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+  }
+  .photo-box svg{width:36px;height:36px;}
+  .photo-box.processing{
+    background:linear-gradient(135deg, #4b5f5f, #35494c);
+    color:#EDEAE0;
+  }
+  .proc-bar-wrap{width:70%;height:5px;background:rgba(255,255,255,0.25);border-radius:3px;overflow:hidden;margin-top:8px;}
+  .proc-bar{height:100%;width:0%;background:var(--marigold);transition:width 1.6s linear;}
+  .photo-box.result{
+    background:#EFE7D2;
+    color:var(--ink);
+    flex-direction:column;
+  }
+  .result-check{
+    font-size:13.5px;
+    background:#fff;
+    border-radius:20px;
+    padding:6px 14px;
+    color:var(--green);
+    font-weight:600;
+    margin-top:10px;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 22px;
+    border-radius:9px;
+    font-size:15px;
+    font-weight:600;
+    border:none;
+    transition:opacity .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--teal);color:#fff;}
+  .btn-primary:hover{background:var(--teal-deep);}
+  .btn-primary:disabled{opacity:.4;cursor:default;}
+  .btn-ghost{background:transparent;color:var(--teal);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--teal);}
+  .btn-marigold{background:var(--marigold);color:#fff;}
+  .btn-marigold:hover{background:var(--marigold-deep);}
+
+  .wizard-actions{
+    display:flex;
+    justify-content:space-between;
+    margin-top:26px;
+  }
+
+  .chip-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .chip{
+    padding:8px 16px;
+    border-radius:20px;
+    border:1.5px solid var(--line);
+    background:#fff;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .chip.selected{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600;}
+
+  .record-btn{
+    width:74px;height:74px;border-radius:50%;
+    background:var(--teal);
+    border:5px solid var(--marigold-soft);
+    display:flex;align-items:center;justify-content:center;
+    margin:8px auto 26px;
+  }
+  .record-btn svg{width:26px;height:26px;color:#fff;}
+  .record-hint{text-align:center;color:var(--stone);font-size:13.5px;margin-top:-14px;margin-bottom:24px;}
+
+  .transcript-box{
+    background:var(--cream);
+    border-radius:10px;
+    padding:16px 18px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    margin-bottom:20px;
+  }
+  .transcript-box .lbl{font-size:12.5px;color:var(--stone);font-weight:600;margin-bottom:6px;}
+
+  .listing-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .listing-block{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .listing-block .lbl{font-size:12.5px;color:var(--marigold-deep);font-weight:700;margin-bottom:8px;}
+  .listing-block p{margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+
+  .price-hero{
+    text-align:left;
+    margin-bottom:26px;
+  }
+  .price-hero .amount{
+    font-size:44px;
+    font-weight:600;
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+  }
+  .conf-pill{
+    display:inline-block;
+    background:#E1EFE4;
+    color:var(--green);
+    font-size:12.5px;
+    font-weight:700;
+    padding:4px 12px;
+    border-radius:16px;
+    margin-left:12px;
+    vertical-align:middle;
+  }
+
+  .breakdown{border-top:1px solid var(--line);margin-bottom:22px;}
+  .b-row{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .b-row .k{color:var(--ink-soft);}
+  .b-row .v{font-weight:600;}
+
+  .slider-wrap{margin-bottom:8px;}
+  .slider-wrap label{font-size:13.5px;color:var(--stone);display:block;margin-bottom:10px;}
+  input[type=range]{
+    width:100%;
+    accent-color:var(--marigold);
+  }
+  .slider-scale{display:flex;justify-content:space-between;font-size:12.5px;color:var(--stone);margin-top:6px;}
+
+  .done-panel{
+    text-align:center;
+    padding:60px 32px;
+  }
+  .done-check{
+    width:64px;height:64px;border-radius:50%;
+    background:#E1EFE4;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 22px;
+  }
+  .done-check svg{width:30px;height:30px;color:var(--green);}
+  .done-panel h3{font-size:22px;margin-bottom:10px;}
+  .done-panel p{color:var(--stone);max-width:380px;margin:0 auto 28px;line-height:1.6;}
+
+  /* ---------- LISTINGS ---------- */
+  .filter-row{display:flex;gap:8px;margin-bottom:22px;}
+  .filter-btn{
+    padding:8px 18px;border-radius:8px;border:1.5px solid var(--line);
+    background:#fff;font-size:14px;color:var(--ink-soft);
+  }
+  .filter-btn.active{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600;}
+
+  .product-list{border-top:1px solid var(--line);}
+  .product-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .p-thumb{
+    width:52px;height:52px;border-radius:9px;
+    background:var(--marigold-soft);
+    flex-shrink:0;
+  }
+  .p-name{font-weight:600;font-size:15px;}
+  .p-price{font-size:13.5px;color:var(--stone);margin-top:2px;}
+  .p-mid{flex:1;}
+  .status-pill{
+    font-size:12px;font-weight:700;padding:4px 11px;border-radius:14px;
+  }
+  .status-pill.live{background:#E1EFE4;color:var(--green);}
+  .status-pill.draft{background:#EFE7D2;color:var(--marigold-deep);}
+  .p-metrics{display:flex;gap:18px;font-size:13px;color:var(--stone);width:130px;justify-content:flex-end;}
+
+  /* ---------- PROFILE ---------- */
+  .profile-card{
+    display:flex;align-items:center;gap:18px;margin-bottom:32px;
+  }
+  .avatar{
+    width:66px;height:66px;border-radius:50%;
+    background:var(--teal);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-size:24px;font-weight:600;
+  }
+  .profile-card .pname{font-size:20px;font-weight:600;font-family:'Fraunces',serif;}
+  .profile-card .ploc{color:var(--stone);font-size:14px;}
+
+  .settings-block{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 24px;
+    margin-bottom:18px;
+  }
+  .settings-block .lbl{font-size:13px;color:var(--stone);font-weight:600;margin-bottom:12px;}
+
+  .toggle-row{display:flex;justify-content:space-between;align-items:center;}
+  .toggle-row .tt{font-weight:600;font-size:15px;}
+  .toggle-row .ts{color:var(--stone);font-size:13.5px;margin-top:3px;}
+  .switch{
+    width:46px;height:26px;border-radius:14px;background:var(--line);
+    position:relative;flex-shrink:0;border:none;cursor:pointer;transition:background .15s ease;
+  }
+  .switch::after{
+    content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+    background:#fff;transition:left .15s ease;
+    box-shadow:0 1px 2px rgba(0,0,0,.2);
+  }
+  .switch.on{background:var(--green);}
+  .switch.on::after{left:23px;}
+
+  .stat-pair{display:flex;gap:16px;}
+  .stat-pair .stat-tile{flex:1;}
+
+  /* ---------- ROLE SELECT ---------- */
+  .role-select{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    background:var(--cream);
+  }
+  .role-card{
+    width:100%;
+    max-width:640px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:44px 40px;
+    text-align:center;
+  }
+  .role-brand{margin-bottom:22px;}
+  .role-mark{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--teal);}
+  .role-dev{font-size:14px;color:var(--stone);margin-top:2px;}
+  .role-card h1{font-size:26px;margin:0 0 8px;}
+  .role-card > p{margin:0 0 30px;color:var(--stone);font-size:15px;}
+  .role-options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .role-option{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:10px;
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:26px 18px;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .role-option:hover{
+    border-color:var(--teal);
+    box-shadow:0 6px 18px rgba(30,74,80,0.12);
+    transform:translateY(-2px);
+  }
+  .role-icon{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--marigold-soft);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--marigold-deep);
+    margin-bottom:4px;
+  }
+  .role-icon svg{width:22px;height:22px;}
+  .role-title{font-weight:600;font-size:15.5px;color:var(--ink);}
+  .role-sub{font-size:13px;color:var(--stone);line-height:1.5;}
+  @media (max-width:560px){
+    .role-card{padding:32px 22px;}
+    .role-options{grid-template-columns:1fr;}
+  }
+
+  .switch-role-link{
+    background:none;border:none;padding:0;margin-top:8px;
+    color:#B9C9C6;font-size:12px;text-decoration:underline;
+    cursor:pointer;
+  }
+  .switch-role-link:hover{color:#fff;}
+
+  /* ---------- BUYER GRID ---------- */
+  .buyer-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .buyer-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+  }
+  .bc-thumb{
+    width:100%;height:120px;border-radius:9px;
+    background:var(--marigold-soft);
+    margin-bottom:12px;
+  }
+  .bc-name{font-weight:600;font-size:15px;}
+  .bc-artisan{font-size:13px;color:var(--stone);margin-top:2px;margin-bottom:10px;}
+  .bc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .bc-price{font-weight:600;font-size:14.5px;}
+  .bc-moq{font-size:12.5px;color:var(--stone);}
+  .bc-btn{width:100%;padding:10px;}
+
+  /* Responsive */
+  @media (max-width:840px){
+    .shell{flex-direction:column;}
+    .sidebar{
+      width:100%;height:auto;position:relative;
+      flex-direction:row;align-items:center;padding:14px 18px;
+    }
+    .brand{margin-bottom:0;flex:1;}
+    .nav{flex-direction:row;gap:2px;}
+    .nav-item span{display:none;}
+    .nav-item{padding:9px;}
+    .sidebar-foot{display:none;}
+    .main{padding:26px 18px 60px;}
+    .stat-row{grid-template-columns:1fr 1fr;}
+    .listing-grid{grid-template-columns:1fr;}
+    .buyer-grid{grid-template-columns:1fr;}
+    .p-metrics{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== ROLE SELECTION ===================== -->
+<div class="role-select" id="roleSelect">
+  <div class="role-card">
+    <div class="role-brand">
+      <div class="role-mark">Kaarigar</div>
+      <div class="role-dev">कारीगर</div>
+    </div>
+    <h1>Welcome to Kaarigar</h1>
+    <p>Choose how you'd like to continue</p>
+
+    <div class="role-options">
+      <button class="role-option" onclick="chooseRole('artisan')">
+        <span class="role-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        </span>
+        <span class="role-title">I'm an Artisan / Seller</span>
+        <span class="role-sub">List your products, get AI-assisted pricing, and reach buyers</span>
+      </button>
+
+      <button class="role-option" onclick="chooseRole('buyer')">
+        <span class="role-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h2l2.4 12.4a2 2 0 002 1.6h8.4a2 2 0 002-1.6L21 8H7"/><circle cx="9.5" cy="20.5" r="1.4"/><circle cx="17.5" cy="20.5" r="1.4"/></svg>
+        </span>
+        <span class="role-title">I'm a B2B Buyer</span>
+        <span class="role-sub">Browse artisan products, request quotes, and place bulk orders</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ARTISAN / SELLER APP ===================== -->
+<div class="shell" id="artisanApp" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">Kaarigar</div>
+      <div class="dev">कारीगर</div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-screen="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>Add product</span>
+      </button>
+      <button class="nav-item" data-screen="listings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Listings</span>
+      </button>
+      <button class="nav-item" data-screen="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">Signed in as Kamala Devi<br>Barmer, Rajasthan<br><button class="switch-role-link" onclick="goToRoleSelect()">Switch role</button></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="container">
+
+      <!-- ===================== HOME ===================== -->
+      <section class="screen active" id="screen-home">
+        <div class="page-head">
+          <div>
+            <h1>Namaste, Kamala</h1>
+            <p class="greeting-sub">Barmer, Rajasthan &nbsp;|&nbsp; Weaver</p>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-tile">
+            <div class="label">This month's sales</div>
+            <div class="value">₹18,240</div>
+            <div class="delta up">↗ +22% vs last month</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">Active listings</div>
+            <div class="value">9</div>
+            <div class="delta warn">3 pending photos</div>
+          </div>
+        </div>
+
+        <button class="cta-banner" onclick="goToScreen('add')">
+          <span class="cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="cta-text">
+            <div class="t1">List a new product</div>
+            <div class="t2">Photo, voice note, price — 3 steps</div>
+          </span>
+        </button>
+
+        <div class="tip-panel">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg>
+          <div>
+            <div class="tt">Market tip</div>
+            <div class="tb">Bandhani sarees are searched 40% more this week ahead of the festive season. Consider restocking.</div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Recent activity</h2>
+        <div class="activity-list">
+          <div class="activity-row">
+            <span class="a-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 016 0"/></svg></span>
+            <div>
+              <div class="a-title">New order — Block-print Dupatta</div>
+              <div class="a-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-row">
+            <span class="a-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></span>
+            <div>
+              <div class="a-title">Price updated by AI — Bandhani Saree</div>
+              <div class="a-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="activity-row">
+            <span class="a-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-8h6v8"/></svg></span>
+            <div>
+              <div class="a-title">Listing approved for GeM marketplace</div>
+              <div class="a-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ADD PRODUCT ===================== -->
+      <section class="screen" id="screen-add">
+        <div class="page-head">
+          <div>
+            <h1>Add new product</h1>
+            <p>Turn a photo and a spoken description into a ready-to-sell listing.</p>
+          </div>
+        </div>
+
+        <div class="steps-track">
+          <div class="seg current" data-seg="1"></div>
+          <div class="seg" data-seg="2"></div>
+          <div class="seg" data-seg="3"></div>
+        </div>
+        <div class="steps-labels">
+          <span id="lbl-1" class="on">Photo</span>
+          <span id="lbl-2">Describe</span>
+          <span id="lbl-3">Price</span>
+        </div>
+
+        <!-- STEP 1: PHOTO -->
+        <div class="wizard-panel wstep" id="step-photo">
+          <h3>Take a product photo</h3>
+          <p class="sub">Don't worry about the background — the AI Photo Studio cleans it up automatically, in natural light, no studio needed.</p>
+
+          <div class="photo-box" id="photoBox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+            <div>Tap the button below to capture</div>
+          </div>
+
+          <div class="wizard-actions">
+            <span></span>
+            <button class="btn btn-primary" id="captureBtn" onclick="capturePhoto()">Capture photo</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: DESCRIBE -->
+        <div class="wizard-panel wstep" id="step-describe" style="display:none;">
+          <h3>Describe it in your language</h3>
+          <p class="sub">Speak naturally — the AI writes the polished listing for you in English and Hindi.</p>
+
+          <div class="chip-row">
+            <button class="chip selected" data-lang="Hindi">Hindi</button>
+            <button class="chip" data-lang="Rajasthani">Rajasthani</button>
+            <button class="chip" data-lang="Bengali">Bengali</button>
+            <button class="chip" data-lang="English">English</button>
+          </div>
+
+          <div class="record-btn" id="recordBtn" onclick="recordVoice()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 003-3V6a3 3 0 00-6 0v5a3 3 0 003 3z"/><path d="M19 11a7 7 0 01-14 0" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 18v3" stroke="currentColor" stroke-width="1.8"/></svg>
+          </div>
+          <div class="record-hint" id="recordHint">Tap the mic and describe your product</div>
+
+          <div id="describeResult" style="display:none;">
+            <div class="transcript-box">
+              <div class="lbl">Heard in Hindi</div>
+              "यह बाड़मेर की हाथ से बनी बंधेज साड़ी है, सूती कपड़े पर प्राकृतिक रंगों से रंगी गई।"
+            </div>
+            <div class="listing-grid">
+              <div class="listing-block">
+                <div class="lbl">English listing</div>
+                <p>Handcrafted Bandhani saree from Barmer — pure cotton, dyed using traditional tie-dye techniques passed down through generations. Ideal for festive wear.</p>
+              </div>
+              <div class="listing-block">
+                <div class="lbl">हिन्दी लिस्टिंग</div>
+                <p>बाड़मेर की पारंपरिक बंधेज साड़ी — शुद्ध सूती कपड़े पर हाथ से बनाई गई, त्यौहारों के लिए उपयुक्त।</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-actions">
+            <button class="btn btn-ghost" onclick="prevStep()">Back</button>
+            <button class="btn btn-primary" id="describeNext" onclick="nextStep()" disabled>Continue</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PRICE -->
+        <div class="wizard-panel wstep" id="step-price" style="display:none;">
+          <h3>Set your price</h3>
+          <p class="sub">Based on your photo, material cost and 340 similar listings sold nearby.</p>
+
+          <div class="price-hero">
+            <span class="amount" id="priceAmount">₹1,650</span>
+            <span class="conf-pill">High confidence</span>
+          </div>
+
+          <div class="breakdown">
+            <div class="b-row"><span class="k">Raw material (cotton, dye)</span><span class="v">₹450</span></div>
+            <div class="b-row"><span class="k">Labour, ~18 hrs at local rate</span><span class="v">₹720</span></div>
+            <div class="b-row"><span class="k">Market average, similar sarees</span><span class="v">₹1,800 – 2,200</span></div>
+          </div>
+
+          <div class="slider-wrap">
+            <label>Adjust your selling price</label>
+            <input type="range" min="1200" max="2400" value="1650" step="10" id="priceSlider" oninput="updatePrice(this.value)">
+            <div class="slider-scale"><span>₹1,200</span><span>₹2,400</span></div>
+          </div>
+
+          <div class="wizard-actions">
+            <button class="btn btn-ghost" onclick="prevStep()">Back</button>
+            <button class="btn btn-marigold" onclick="publishListing()">Publish listing</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: DONE -->
+        <div class="wizard-panel wstep done-panel" id="step-done" style="display:none;">
+          <div class="done-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3>Your product is live</h3>
+          <p>The Bandhani Saree is now visible to buyers on Kaarigar and synced to the GeM marketplace.</p>
+          <button class="btn btn-primary" onclick="resetWizardAndGoHome()">Back to home</button>
+        </div>
+      </section>
+
+      <!-- ===================== LISTINGS ===================== -->
+      <section class="screen" id="screen-listings">
+        <div class="page-head">
+          <div>
+            <h1>My listings</h1>
+            <p>9 products across 2 marketplaces</p>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="live">Live</button>
+          <button class="filter-btn" data-filter="draft">Draft</button>
+        </div>
+
+        <div class="product-list" id="productList">
+          <div class="product-row" data-status="live">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Bandhani Saree</div>
+              <div class="p-price">₹1,650</div>
+            </div>
+            <span class="status-pill live">Live</span>
+            <div class="p-metrics"><span>214 views</span><span>6 orders</span></div>
+          </div>
+          <div class="product-row" data-status="live">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Block-print Dupatta</div>
+              <div class="p-price">₹740</div>
+            </div>
+            <span class="status-pill live">Live</span>
+            <div class="p-metrics"><span>132 views</span><span>3 orders</span></div>
+          </div>
+          <div class="product-row" data-status="draft">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Terracotta Diyas</div>
+              <div class="p-price">₹320</div>
+            </div>
+            <span class="status-pill draft">Draft</span>
+            <div class="p-metrics"><span>0 views</span><span>0 orders</span></div>
+          </div>
+          <div class="product-row" data-status="live">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Madhubani Wall Art</div>
+              <div class="p-price">₹2,100</div>
+            </div>
+            <span class="status-pill live">Live</span>
+            <div class="p-metrics"><span>301 views</span><span>9 orders</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PROFILE ===================== -->
+      <section class="screen" id="screen-profile">
+        <div class="page-head">
+          <div>
+            <h1>Profile</h1>
+            <p>Language preference, earnings, and marketplace connections</p>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="avatar">K</div>
+          <div>
+            <div class="pname">Kamala Devi</div>
+            <div class="ploc">Barmer, Rajasthan</div>
+          </div>
+        </div>
+
+        <div class="settings-block">
+          <div class="lbl">App language</div>
+          <div class="chip-row" style="margin-bottom:0;">
+            <button class="chip selected" data-plang="Hindi">Hindi</button>
+            <button class="chip" data-plang="English">English</button>
+            <button class="chip" data-plang="Rajasthani">Rajasthani</button>
+          </div>
+        </div>
+
+        <div class="settings-block">
+          <div class="toggle-row">
+            <div>
+              <div class="tt">Sell on GeM &amp; B2B buyers</div>
+              <div class="ts">Auto-list approved products to the government e-marketplace</div>
+            </div>
+            <button class="switch on" id="gemSwitch" onclick="toggleSwitch(this)"></button>
+          </div>
+        </div>
+
+        <div class="stat-pair">
+          <div class="stat-tile">
+            <div class="label">Total earned</div>
+            <div class="value">₹1.2L</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">Rating</div>
+            <div class="value">4.8</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+<!-- ===================== END ARTISAN / SELLER APP ===================== -->
+
+<!-- ===================== B2B BUYER APP ===================== -->
+<div class="shell" id="buyerApp" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">Kaarigar</div>
+      <div class="dev">B2B Buyer</div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-bscreen="browse" onclick="goToBuyerScreen('browse')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span>Browse</span>
+      </button>
+      <button class="nav-item" data-bscreen="requests" onclick="goToBuyerScreen('requests')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 016 0"/></svg>
+        <span>My requests</span>
+      </button>
+      <button class="nav-item" data-bscreen="bprofile" onclick="goToBuyerScreen('bprofile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">Signed in as Meridian Retail Pvt Ltd<br>Ahmedabad, Gujarat<br><button class="switch-role-link" onclick="goToRoleSelect()">Switch role</button></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="container">
+
+      <!-- ===================== BROWSE ===================== -->
+      <section class="screen active" id="bscreen-browse">
+        <div class="page-head">
+          <div>
+            <h1>Browse artisan products</h1>
+            <p>9 products from verified artisan sellers, ready for bulk sourcing</p>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <button class="filter-btn active" data-bfilter="all">All</button>
+          <button class="filter-btn" data-bfilter="Textiles">Textiles</button>
+          <button class="filter-btn" data-bfilter="Decor">Home Decor</button>
+        </div>
+
+        <div class="buyer-grid" id="buyerGrid">
+          <div class="buyer-card" data-category="Textiles">
+            <div class="bc-thumb"></div>
+            <div class="bc-name">Bandhani Saree</div>
+            <div class="bc-artisan">Kamala Devi · Barmer, Rajasthan</div>
+            <div class="bc-row"><span class="bc-price">₹1,650 / pc</span><span class="bc-moq">MOQ 20</span></div>
+            <button class="btn btn-ghost bc-btn" onclick="requestQuote(this,'Bandhani Saree','Kamala Devi')">Request quote</button>
+          </div>
+          <div class="buyer-card" data-category="Textiles">
+            <div class="bc-thumb"></div>
+            <div class="bc-name">Block-print Dupatta</div>
+            <div class="bc-artisan">Kamala Devi · Barmer, Rajasthan</div>
+            <div class="bc-row"><span class="bc-price">₹740 / pc</span><span class="bc-moq">MOQ 30</span></div>
+            <button class="btn btn-ghost bc-btn" onclick="requestQuote(this,'Block-print Dupatta','Kamala Devi')">Request quote</button>
+          </div>
+          <div class="buyer-card" data-category="Decor">
+            <div class="bc-thumb"></div>
+            <div class="bc-name">Terracotta Diyas</div>
+            <div class="bc-artisan">Ramesh Prajapati · Bhuj, Gujarat</div>
+            <div class="bc-row"><span class="bc-price">₹320 / set</span><span class="bc-moq">MOQ 50</span></div>
+            <button class="btn btn-ghost bc-btn" onclick="requestQuote(this,'Terracotta Diyas','Ramesh Prajapati')">Request quote</button>
+          </div>
+          <div class="buyer-card" data-category="Decor">
+            <div class="bc-thumb"></div>
+            <div class="bc-name">Madhubani Wall Art</div>
+            <div class="bc-artisan">Sunita Jha · Madhubani, Bihar</div>
+            <div class="bc-row"><span class="bc-price">₹2,100 / pc</span><span class="bc-moq">MOQ 10</span></div>
+            <button class="btn btn-ghost bc-btn" onclick="requestQuote(this,'Madhubani Wall Art','Sunita Jha')">Request quote</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== MY REQUESTS ===================== -->
+      <section class="screen" id="bscreen-requests">
+        <div class="page-head">
+          <div>
+            <h1>My requests</h1>
+            <p>Quote requests and orders placed with artisan sellers</p>
+          </div>
+        </div>
+
+        <div class="product-list" id="requestList">
+          <div class="product-row">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Madhubani Wall Art</div>
+              <div class="p-price">Sunita Jha · Qty 10</div>
+            </div>
+            <span class="status-pill live">Confirmed</span>
+          </div>
+          <div class="product-row">
+            <div class="p-thumb"></div>
+            <div class="p-mid">
+              <div class="p-name">Terracotta Diyas</div>
+              <div class="p-price">Ramesh Prajapati · Qty 200</div>
+            </div>
+            <span class="status-pill draft">Pending quote</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== BUYER PROFILE ===================== -->
+      <section class="screen" id="bscreen-bprofile">
+        <div class="page-head">
+          <div>
+            <h1>Company profile</h1>
+            <p>Business details and sourcing preferences</p>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="avatar">M</div>
+          <div>
+            <div class="pname">Meridian Retail Pvt Ltd</div>
+            <div class="ploc">Ahmedabad, Gujarat &nbsp;|&nbsp; GSTIN: 24AACFM1234A1Z5</div>
+          </div>
+        </div>
+
+        <div class="settings-block">
+          <div class="lbl">Preferred sourcing categories</div>
+          <div class="chip-row" style="margin-bottom:0;">
+            <button class="chip selected" data-blang="Textiles">Textiles</button>
+            <button class="chip" data-blang="Home Decor">Home Decor</button>
+            <button class="chip" data-blang="Pottery">Pottery</button>
+            <button class="chip" data-blang="Jewellery">Jewellery</button>
+          </div>
+        </div>
+
+        <div class="stat-pair">
+          <div class="stat-tile">
+            <div class="label">Total orders</div>
+            <div class="value">14</div>
+          </div>
+          <div class="stat-tile">
+            <div class="label">Active requests</div>
+            <div class="value" id="activeReqCount">2</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+<!-- ===================== END B2B BUYER APP ===================== -->
+
+<script>
+  // ---------- Role selection ----------
+  function chooseRole(role){
+    document.getElementById('roleSelect').style.display = 'none';
+    document.getElementById('artisanApp').style.display = 'none';
+    document.getElementById('buyerApp').style.display = 'none';
+    if(role === 'artisan'){
+      document.getElementById('artisanApp').style.display = 'flex';
+    } else if(role === 'buyer'){
+      document.getElementById('buyerApp').style.display = 'flex';
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function goToRoleSelect(){
+    document.getElementById('artisanApp').style.display = 'none';
+    document.getElementById('buyerApp').style.display = 'none';
+    document.getElementById('roleSelect').style.display = 'flex';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ---------- Buyer app: screen navigation ----------
+  function goToBuyerScreen(name){
+    document.querySelectorAll('#buyerApp .screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('bscreen-' + name).classList.add('active');
+    document.querySelectorAll('#buyerApp .nav-item').forEach(b => b.classList.toggle('active', b.dataset.bscreen === name));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ---------- Buyer app: category filter ----------
+  document.querySelectorAll('#buyerApp .filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#buyerApp .filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.bfilter;
+      document.querySelectorAll('#buyerGrid .buyer-card').forEach(card=>{
+        card.style.display = (f === 'all' || card.dataset.category === f) ? 'block' : 'none';
+      });
+    });
+  });
+
+  // ---------- Buyer app: profile chips ----------
+  document.querySelectorAll('[data-blang]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      chip.classList.toggle('selected');
+    });
+  });
+
+  // ---------- Buyer app: request a quote ----------
+  let activeRequestCount = 2;
+  function requestQuote(btn, productName, artisanName){
+    if(btn.disabled) return;
+    btn.disabled = true;
+    btn.textContent = 'Requested';
+
+    const list = document.getElementById('requestList');
+    const row = document.createElement('div');
+    row.className = 'product-row';
+    row.innerHTML = '<div class="p-thumb"></div>' +
+      '<div class="p-mid"><div class="p-name">' + productName + '</div>' +
+      '<div class="p-price">' + artisanName + ' · Qty 50</div></div>' +
+      '<span class="status-pill draft">Pending quote</span>';
+    list.prepend(row);
+
+    activeRequestCount++;
+    const counter = document.getElementById('activeReqCount');
+    if(counter) counter.textContent = activeRequestCount;
+  }
+
+  // ---------- Screen navigation ----------
+  function goToScreen(name){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.screen === name));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.addEventListener('click', ()=> goToScreen(btn.dataset.screen));
+  });
+
+  // ---------- Wizard state ----------
+  const stepOrder = ['photo','describe','price','done'];
+  let currentStepIndex = 0;
+
+  function renderTrack(){
+    document.querySelectorAll('.steps-track .seg').forEach((seg,i)=>{
+      seg.classList.remove('done','current');
+      if(i < currentStepIndex) seg.classList.add('done');
+      else if(i === currentStepIndex) seg.classList.add('current');
+    });
+    ['1','2','3'].forEach((n,i)=>{
+      document.getElementById('lbl-'+n).classList.toggle('on', i <= currentStepIndex && currentStepIndex < 3);
+    });
+  }
+
+  function showStep(index){
+    currentStepIndex = index;
+    document.querySelectorAll('.wstep').forEach(w => w.style.display = 'none');
+    document.getElementById('step-' + stepOrder[index]).style.display = 'block';
+    document.querySelector('.steps-track').style.display = index === 3 ? 'none' : 'flex';
+    document.querySelector('.steps-labels').style.display = index === 3 ? 'none' : 'flex';
+    renderTrack();
+  }
+
+  function nextStep(){ showStep(Math.min(currentStepIndex + 1, stepOrder.length - 1)); }
+  function prevStep(){ showStep(Math.max(currentStepIndex - 1, 0)); }
+
+  function resetWizardAndGoHome(){
+    // reset photo box
+    const box = document.getElementById('photoBox');
+    box.className = 'photo-box';
+    box.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/></svg><div>Tap the button below to capture</div>';
+    document.getElementById('captureBtn').disabled = false;
+    document.getElementById('captureBtn').textContent = 'Capture photo';
+    // reset describe
+    document.getElementById('describeResult').style.display = 'none';
+    document.getElementById('recordHint').textContent = 'Tap the mic and describe your product';
+    document.getElementById('describeNext').disabled = true;
+    showStep(0);
+    goToScreen('home');
+  }
+
+  // ---------- Step 1: photo capture ----------
+  function capturePhoto(){
+    const box = document.getElementById('photoBox');
+    const captureBtn = document.getElementById('captureBtn');
+    captureBtn.disabled = true;
+    box.className = 'photo-box processing';
+    box.innerHTML = '<div style="font-weight:600;">Removing background, fixing light…</div><div class="proc-bar-wrap"><div class="proc-bar" id="procBar"></div></div>';
+    requestAnimationFrame(()=>{ document.getElementById('procBar').style.width = '100%'; });
+
+    setTimeout(()=>{
+      box.className = 'photo-box result';
+      box.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="34" height="34"><rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/></svg><div class="result-check">Background removed · lighting corrected · e-commerce ready</div>';
+      captureBtn.disabled = false;
+      captureBtn.textContent = 'Use this photo';
+      captureBtn.onclick = () => { nextStep(); };
+    }, 1800);
+  }
+
+  // ---------- Step 2: language chips + voice ----------
+  document.querySelectorAll('#step-describe .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.querySelectorAll('#step-describe .chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+
+  function recordVoice(){
+    document.getElementById('recordHint').textContent = 'Listening…';
+    setTimeout(()=>{
+      document.getElementById('recordHint').textContent = 'Description captured';
+      document.getElementById('describeResult').style.display = 'block';
+      document.getElementById('describeNext').disabled = false;
+    }, 1400);
+  }
+
+  // ---------- Step 3: price slider ----------
+  function updatePrice(val){
+    document.getElementById('priceAmount').textContent = '₹' + Number(val).toLocaleString('en-IN');
+  }
+
+  function publishListing(){
+    showStep(3);
+  }
+
+  // ---------- Listings filter ----------
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('#productList .product-row').forEach(row=>{
+        row.style.display = (f === 'all' || row.dataset.status === f) ? 'flex' : 'none';
+      });
+    });
+  });
+
+  // ---------- Profile language chips ----------
+  document.querySelectorAll('[data-plang]').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      document.querySelectorAll('[data-plang]').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+    });
+  });
+
+  // ---------- Toggle switch ----------
+  function toggleSwitch(el){
+    el.classList.toggle('on');
+  }
+
+  // init
+  showStep(0);
+</script>
+
+</body>
+</html>
